@@ -6,7 +6,7 @@ Archive contains some past working versions. Unnecessary code contains old code 
 
 Preferences.json is from before when I fed JSON instead of HTML
 
-ComfortScore.py is the comfort function in its own file, I belive fully up to date.
+ComfortScore.py is the comfort function in its own file, I believe fully up to date.
 
 Real-Create_DF is the most up to date code to creating the dataframe that the actual code and app use from the given data frame - lots of cleaning etc. Produces full_df.csv. That csv contains all cleaned weather data and corresponding geometry for each county.
 
