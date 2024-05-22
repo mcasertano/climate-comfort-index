@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Climate Preferences Form</title>
+    <style>
+        .large-image {
+            width: 100%;    /* You can use a percentage to make it responsive */
+            max-width: 800px; /* Sets the maximum width to avoid overly large images */
+            height: auto;  /* Maintains the aspect ratio */
+        }
+    </style>
+</head>
+<body>
+    <h2>Enter Your Climate Preferences</h2>
+    <form action="/" method="post">
+        <label>Preferred Summer High (°F):</label>
+        <input type="number" name="preferred_summer_high" value="{{ preferences.get('preferred_summer_high', '70.0') }}" step="0.1"><br>
+
+        <label>Preferred Winter Low (°F):</label>
+        <input type="number" name="preferred_winter_low" value="{{ preferences.get('preferred_winter_low', '50.0') }}" step="0.1"><br>
+
+        <label>Temperature Variation Tolerance:</label>
+        <select name="temperature_variation_tolerance">
+            <option value="low" {% if preferences.get('temperature_variation_tolerance') == 'low' %}selected{% endif %}>Low</option>
+            <option value="moderate" {% if preferences.get('temperature_variation_tolerance') == 'moderate' %}selected{% endif %}>Moderate</option>
+            <option value="high" {% if preferences.get('temperature_variation_tolerance') == 'high' %}selected{% endif %}>High</option>
+        </select><br>
+
+        <label>Preferred Summer Humidity:</label>
+        <select name="preferred_summer_humidity">
+            <option value="low" {% if preferences.get('preferred_summer_humidity') == 'low' %}selected{% endif %}>Low</option>
+            <option value="moderate" {% if preferences.get('preferred_summer_humidity') == 'moderate' %}selected{% endif %}>Moderate</option>
+            <option value="high" {% if preferences.get('preferred_summer_humidity') == 'high' %}selected{% endif %}>High</option>
+        </select><br>
+
+        <label>Preferred Winter Humidity:</label>
+        <select name="preferred_winter_humidity">
+            <option value="low" {% if preferences.get('preferred_winter_humidity') == 'low' %}selected{% endif %}>Low</option>
+            <option value="moderate" {% if preferences.get('preferred_winter_humidity') == 'moderate' %}selected{% endif %}>Moderate</option>
+            <option value="high" {% if preferences.get('preferred_winter_humidity') == 'high' %}selected{% endif %}>High</option>
+        </select><br>
+
+        <label>Sun Preference:</label>
+        <select name="sun_preference">
+            <option value="more sun" {% if preferences.get('sun_preference') == 'more sun' %}selected{% endif %}>More Sun</option>
+            <option value="balanced" {% if preferences.get('sun_preference') == 'balanced' %}selected{% endif %}>Balanced</option>
+            <option value="less sun" {% if preferences.get('sun_preference') == 'less sun' %}selected{% endif %}>Less Sun</option>
+        </select><br>
+
+        <label>Rainfall Season Preference:</label>
+        <select name="rainfall_season_preference">
+            <option value="balanced" {% if preferences.get('rainfall_season_preference') == 'balanced' %}selected{% endif %}>Balanced</option>
+            <option value="more in summer" {% if preferences.get('rainfall_season_preference') == 'more in summer' %}selected{% endif %}>More in Summer</option>
+            <option value="more in winter" {% if preferences.get('rainfall_season_preference') == 'more in winter' %}selected{% endif %}>More in Winter</option>
+        </select><br>
+
+        <label>Annual Rainfall Preference:</label>
+        <select name="annual_rainfall_preference">
+            <option value="low" {% if preferences.get('annual_rainfall_preference') == 'low' %}selected{% endif %}>Low</option>
+            <option value="moderate" {% if preferences.get('annual_rainfall_preference') == 'moderate' %}selected{% endif %}>Moderate</option>
+            <option value="high" {% if preferences.get('annual_rainfall_preference') == 'high' %}selected{% endif %}>High</option>
+        </select><br>
+
+        <label>Enjoy Snow:</label>
+        <select name="enjoy_snow">
+            <option value="yes" {% if preferences.get('enjoy_snow') == 'yes' %}selected{% endif %}>Yes</option>
+            <option value="no" {% if preferences.get('enjoy_snow') == 'no' %}selected{% endif %}>No</option>
+        </select><br>
+
+        <label>Snow Days Preference:</label>
+        <input type="number" name="snow_days_preference" value="{{ preferences.get('snow_days_preference', '10') }}" step="1"><br>
+
+        <label>UV Tolerance:</label>
+        <select name="uv_tolerance">
+            <option value="low" {% if preferences.get('uv_tolerance') == 'low' %}selected{% endif %}>Low</option>
+            <option value="moderate" {% if preferences.get('uv_tolerance') == 'moderate' %}selected{% endif %}>Moderate</option>
+            <option value="high" {% if preferences.get('uv_tolerance') == 'high' %}selected{% endif %}>High</option>
+        </select><br>
+
+        <label>Importance of Temperature:</label>
+        <input type="number" name="importance_temperature" value="{{ preferences.get('importance_temperature', '7') }}" min="1" max="10" step="1"><br>
+
+        <label>Importance of Humidity:</label>
+        <input type="number" name="importance_humidity" value="{{ preferences.get('importance_humidity', '4') }}" min="1" max="10" step="1"><br>
+
+        <label>Importance of Sunshine:</label>
+        <input type="number" name="importance_sunshine" value="{{ preferences.get('importance_sunshine', '3') }}" min="1" max="10" step="1"><br>
+
+        <label>Importance of Rainfall:</label>
+        <input type="number" name="importance_rainfall" value="{{ preferences.get('importance_rainfall', '2') }}" min="1" max="10" step="1"><br>
+
+        <label>Importance of Snowfall:</label>
+        <input type="number" name="importance_snowfall" value="{{ preferences.get('importance_snowfall', '2') }}" min="1" max="10" step="1"><br>
+
+        <label>Importance of UV Index:</label>
+        <input type="number" name="importance_uv_index" value="{{ preferences.get('importance_uv_index', '4') }}" min="1" max="10" step="1"><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    {% if plot_url %}
+    <div>
+        <img src="data:image/png;base64,{{ plot_url }}" alt="Comfort Index Plot" class="large-image">
+    </div>
+    {% endif %}
+
+    <h3>Best 5 Counties for Comfort</h3>
+    <ul>
+    {% for county in top_counties.iterrows() %}
+        <li>{{ county[1]['NAME'] | smart_capitalize }}, {{ county[1]['State'] }}: {{ county[1]['normalized_score'] | round_three}}</li>
+    {% endfor %}
+    </ul>
+
+    <h3>Worst 5 Counties for Comfort</h3>
+    <ul>
+    {% for county in bottom_counties.iterrows() %}
+        <li>{{ county[1]['NAME'] | smart_capitalize }}, {{ county[1]['State'] }}: {{ county[1]['normalized_score'] | round_three}}</li>
+    {% endfor %}
+    </ul>
+
+    <p>Note: Some counties, as well as Alaska and Hawaii are missing from the data.</p>  
+</body>
+</html>

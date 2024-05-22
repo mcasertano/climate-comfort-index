@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Preferences Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .large-image {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+        }
+        .card {
+            margin-bottom: 30px;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .footer-note {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2>Enter Your Climate Preferences</h2>
+            </div>
+            <div class="card-body">
+                <form action="/" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="preferred_summer_high" class="form-label">Preferred Summer High (°F):</label>
+                                <input type="number" class="form-control" id="preferred_summer_high" name="preferred_summer_high" value="{{ preferences.get('preferred_summer_high', '70.0') }}" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="preferred_winter_low" class="form-label">Preferred Winter Low (°F):</label>
+                                <input type="number" class="form-control" id="preferred_winter_low" name="preferred_winter_low" value="{{ preferences.get('preferred_winter_low', '50.0') }}" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="temperature_variation_tolerance" class="form-label">Temperature Variation Tolerance:</label>
+                                <select class="form-control" id="temperature_variation_tolerance" name="temperature_variation_tolerance">
+                                    <option value="low" {% if preferences.get('temperature_variation_tolerance') == 'low' %}selected{% endif %}>Low</option>
+                                    <option value="moderate" {% if preferences.get('temperature_variation_tolerance') == 'moderate' %}selected{% endif %}>Moderate</option>
+                                    <option value="high" {% if preferences.get('temperature_variation_tolerance') == 'high' %}selected{% endif %}>High</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="preferred_summer_humidity" class="form-label">Preferred Summer Humidity:</label>
+                                <select class="form-control" id="preferred_summer_humidity" name="preferred_summer_humidity">
+                                    <option value="low" {% if preferences.get('preferred_summer_humidity') == 'low' %}selected{% endif %}>Low</option>
+                                    <option value="moderate" {% if preferences.get('preferred_summer_humidity') == 'moderate' %}selected{% endif %}>Moderate</option>
+                                    <option value="high" {% if preferences.get('preferred_summer_humidity') == 'high' %}selected{% endif %}>High</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="preferred_winter_humidity" class="form-label">Preferred Winter Humidity:</label>
+                                <select class="form-control" id="preferred_winter_humidity" name="preferred_winter_humidity">
+                                    <option value="low" {% if preferences.get('preferred_winter_humidity') == 'low' %}selected{% endif %}>Low</option>
+                                    <option value="moderate" {% if preferences.get('preferred_winter_humidity') == 'moderate' %}selected{% endif %}>Moderate</option>
+                                    <option value="high" {% if preferences.get('preferred_winter_humidity') == 'high' %}selected{% endif %}>High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="sun_preference" class="form-label">Sun Preference:</label>
+                                <select class="form-control" id="sun_preference" name="sun_preference">
+                                    <option value="more sun" {% if preferences.get('sun_preference') == 'more sun' %}selected{% endif %}>More Sun</option>
+                                    <option value="balanced" {% if preferences.get('sun_preference') == 'balanced' %}selected{% endif %}>Balanced</option>
+                                    <option value="less sun" {% if preferences.get('sun_preference') == 'less sun' %}selected{% endif %}>Less Sun</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="rainfall_season_preference" class="form-label">Rainfall Season Preference:</label>
+                                <select class="form-control" id="rainfall_season_preference" name="rainfall_season_preference">
+                                    <option value="balanced" {% if preferences.get('rainfall_season_preference') == 'balanced' %}selected{% endif %}>Balanced</option>
+                                    <option value="more in summer" {% if preferences.get('rainfall_season_preference') == 'more in summer' %}selected{% endif %}>More in Summer</option>
+                                    <option value="more in winter" {% if preferences.get('rainfall_season_preference') == 'more in winter' %}selected{% endif %}>More in Winter</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="annual_rainfall_preference" class="form-label">Annual Rainfall Preference:</label>
+                                <select class="form-control" id="annual_rainfall_preference" name="annual_rainfall_preference">
+                                    <option value="low" {% if preferences.get('annual_rainfall_preference') == 'low' %}selected{% endif %}>Low</option>
+                                    <option value="moderate" {% if preferences.get('annual_rainfall_preference') == 'moderate' %}selected{% endif %}>Moderate</option>
+                                    <option value="high" {% if preferences.get('annual_rainfall_preference') == 'high' %}selected{% endif %}>High</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="enjoy_snow" class="form-label">Enjoy Snow:</label>
+                                <select class="form-control" id="enjoy_snow" name="enjoy_snow">
+                                    <option value="yes" {% if preferences.get('enjoy_snow') == 'yes' %}selected{% endif %}>Yes</option>
+                                    <option value="no" {% if preferences.get('enjoy_snow') == 'no' %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="snow_days_preference" class="form-label">Snow Days Preference:</label>
+                                <input type="number" class="form-control" id="snow_days_preference" name="snow_days_preference" value="{{ preferences.get('snow_days_preference', '10') }}" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="uv_tolerance" class="form-label">UV Tolerance:</label>
+                                <select class="form-control" id="uv_tolerance" name="uv_tolerance">
+                                    <option value="low" {% if preferences.get('uv_tolerance') == 'low' %}selected{% endif %}>Low</option>
+                                    <option value="moderate" {% if preferences.get('uv_tolerance') == 'moderate' %}selected{% endif %}>Moderate</option>
+                                    <option value="high" {% if preferences.get('uv_tolerance') == 'high' %}selected{% endif %}>High</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Importance of Preferences</h3>
+                    <p>Please rate the importance of your previous preferences on a scale of 1 to 10 by category:</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="importance_temperature" class="form-label">Importance of Temperature:</label>
+                                <input type="number" class="form-control" id="importance_temperature" name="importance_temperature" value="{{ preferences.get('importance_temperature', '7') }}" min="1" max="10" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="importance_humidity" class="form-label">Importance of Humidity:</label>
+                                <input type="number" class="form-control" id="importance_humidity" name="importance_humidity" value="{{ preferences.get('importance_humidity', '4') }}" min="1" max="10" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="importance_sunshine" class="form-label">Importance of Sunshine:</label>
+                                <input type="number" class="form-control" id="importance_sunshine" name="importance_sunshine" value="{{ preferences.get('importance_sunshine', '3') }}" min="1" max="10" step="1">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="importance_rainfall" class="form-label">Importance of Rainfall:</label>
+                                <input type="number" class="form-control" id="importance_rainfall" name="importance_rainfall" value="{{ preferences.get('importance_rainfall', '2') }}" min="1" max="10" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="importance_snowfall" class="form-label">Importance of Snowfall:</label>
+                                <input type="number" class="form-control" id="importance_snowfall" name="importance_snowfall" value="{{ preferences.get('importance_snowfall', '2') }}" min="1" max="10" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="importance_uv_index" class="form-label">Importance of UV Index:</label>
+                                <input type="number" class="form-control" id="importance_uv_index" name="importance_uv_index" value="{{ preferences.get('importance_uv_index', '4') }}" min="1" max="10" step="1">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        {% if plot_url %}
+        <div class="card">
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ plot_url }}" alt="Comfort Index Plot" class="large-image">
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3>Best 5 Counties for Comfort</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                {% for county in top_counties.iterrows() %}
+                    <li class="list-group-item">{{ county[1]['NAME'] | smart_capitalize }}, {{ county[1]['State'] }}: {{ county[1]['normalized_score'] | round_three}}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3>Worst 5 Counties for Comfort</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                {% for county in bottom_counties.iterrows() %}
+                    <li class="list-group-item">{{ county[1]['NAME'] | smart_capitalize }}, {{ county[1]['State'] }}: {{ county[1]['normalized_score'] | round_three}}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <p class="footer-note">Note: Some counties, as well as Alaska and Hawaii, are missing from the data.</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
