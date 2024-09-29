@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Climate Preferences Form</title>
+    <style>
+        .submit-row input[type="submit"] {
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            padding: 10px 20px; /* Padding */
+            border: none; /* Remove border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 1em; /* Font size */
+            transition: background-color 0.3s ease; /* Transition effect */
+        }
+
+        .submit-row input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        .submit-row {
+            margin-top: 20px; /* Space above the button */
+            text-align: center; /* Center the button */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 450px;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #ccc;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .category-group {
+            margin-bottom: 20px;
+        }
+        .category-group h3 {
+            margin-top: 0;
+        }
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .form-row label {
+            flex: 1;
+        }
+        .form-row input,
+        .form-row select {
+            flex: 2;
+            padding: 5px;
+        }
+        .form-row .weight {
+            flex: 1;
+            text-align: right;
+        }
+        .submit-row {
+            text-align: center;
+        }
+        .large-image {
+            width: 100%;
+            height: auto;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .county-lists {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .county-list {
+            flex: 1;
+            margin: 0 10px;
+        }
+        .county-list h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .county-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .county-list ul li {
+            margin-bottom: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Enter Your Climate Preferences</h2>
+        <form action="/" method="post">
+            <div class="category-group">
+                <h3>Temperature Preferences</h3>
+                <div class="form-row">
+                    <label>Summer High (°F):</label>
+                    <input type="number" name="preferred_summer_high" value="{{ preferences.get('preferred_summer_high', '80.0') }}" step="0.1">
+                </div>
+                <div class="form-row">
+                    <label>Winter Low (°F):</label>
+                    <input type="number" name="preferred_winter_low" value="{{ preferences.get('preferred_winter_low', '30.0') }}" step="0.1">
+                </div>
+                <div class="form-row">
+                    <label>Importance:</label>
+                    <input type="number" name="importance_temperature" value="{{ preferences.get('importance_temperature', '7') }}" min="0" max="10" step="1">
+                </div>
+            </div>
+
+            <div class="category-group">
+                <h3>Humidity Preferences</h3>
+                <div class="form-row">
+                    <label>Summer Humidity:</label>
+                    <select name="preferred_summer_humidity">
+                        <option value="low" {% if preferences.get('preferred_summer_humidity') == 'low' %}selected{% endif %}>Low</option>
+                        <option value="moderate" {% if preferences.get('preferred_summer_humidity') == 'moderate' %}selected{% endif %}>Moderate</option>
+                        <option value="high" {% if preferences.get('preferred_summer_humidity') == 'high' %}selected{% endif %}>High</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Winter Humidity:</label>
+                    <select name="preferred_winter_humidity">
+                        <option value="low" {% if preferences.get('preferred_winter_humidity') == 'low' %}selected{% endif %}>Low</option>
+                        <option value="moderate" {% if preferences.get('preferred_winter_humidity') == 'moderate' %}selected{% endif %}>Moderate</option>
+                        <option value="high" {% if preferences.get('preferred_winter_humidity') == 'high' %}selected{% endif %}>High</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Importance:</label>
+                    <input type="number" name="importance_humidity" value="{{ preferences.get('importance_humidity', '4') }}" min="0" max="10" step="1">
+                </div>
+            </div>
+
+            <div class="category-group">
+                <h3>Rainfall Preferences</h3>
+                <div class="form-row">
+                    <label>Rainfall Season:</label>
+                    <select name="rainfall_season_preference">
+                        <option value="balanced" {% if preferences.get('rainfall_season_preference') == 'balanced' %}selected{% endif %}>Balanced</option>
+                        <option value="more in summer" {% if preferences.get('rainfall_season_preference') == 'more in summer' %}selected{% endif %}>More in Summer</option>
+                        <option value="more in winter" {% if preferences.get('rainfall_season_preference') == 'more in winter' %}selected{% endif %}>More in Winter</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Annual Rainfall:</label>
+                    <select name="annual_rainfall_preference">
+                        <option value="low" {% if preferences.get('annual_rainfall_preference') == 'low' %}selected{% endif %}>Low</option>
+                        <option value="moderate" {% if preferences.get('annual_rainfall_preference') == 'moderate' %}selected{% endif %}>Moderate</option>
+                        <option value="high" {% if preferences.get('annual_rainfall_preference') == 'high' %}selected{% endif %}>High</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Importance:</label>
+                    <input type="number" name="importance_rainfall" value="{{ preferences.get('importance_rainfall', '2') }}" min="0" max="10" step="1">
+                </div>
+            </div>
+
+            <div class="category-group">
+                <h3>Snowfall Preferences</h3>
+                <div class="form-row">
+                    <label>Enjoy Snow:</label>
+                    <select name="enjoy_snow">
+                        <option value="yes" {% if preferences.get('enjoy_snow') == 'yes' %}selected{% endif %}>Yes</option>
+                        <option value="no" {% if preferences.get('enjoy_snow') == 'no' %}selected{% endif %}>No</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Snow Days:</label>
+                    <input type="number" name="snow_days_preference" value="{{ preferences.get('snow_days_preference', '10') }}" step="1">
+                </div>
+                <div class="form-row">
+                    <label>Importance:</label>
+                    <input type="number" name="importance_snowfall" value="{{ preferences.get('importance_snowfall', '2') }}" min="0" max="10" step="1">
+                </div>
+            </div>
+
+            <div class="category-group">
+                <h3>Sun Preferences</h3>
+                <div class="form-row">
+                    <label>Sunshine:</label>
+                    <select name="sun_preference">
+                        <option value="more sun" {% if preferences.get('sun_preference') == 'more sun' %}selected{% endif %}>More Sun</option>
+                        <option value="average sun" {% if preferences.get('sun_preference') == 'average sun' %}selected{% endif %}>Average Sun</option>
+                        <option value="less sun" {% if preferences.get('sun_preference') == 'less sun' %}selected{% endif %}>Less Sun</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>UV:</label>
+                    <select name="uv_preference">
+                        <option value="low" {% if preferences.get('uv_preference') == 'low' %}selected{% endif %}>Low</option>
+                        <option value="moderate" {% if preferences.get('uv_preference') == 'moderate' %}selected{% endif %}>Moderate</option>
+                        <option value="high" {% if preferences.get('uv_preference') == 'high' %}selected{% endif %}>High</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Importance:</label>
+                    <input type="number" name="importance_sun" value="{{ preferences.get('importance_sun', '4') }}" min="0" max="10" step="1">
+                </div>
+            </div>
+
+            <div class="submit-row">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+
+    <div class="main-content">
+        {% if plot_url %}
+        <div>
+            <img src="data:image/png;base64,{{ plot_url }}" alt="Comfort Index Plot" class="large-image">
+        </div>
+        <p class="footer-note">Note: Due to data availability, some counties, as well as Alaska and Hawaii, are missing above.</p>
+
+        <div class="county-lists">
+            <div class="county-list">
+                <h3>Best 5 Counties for Comfort</h3>
+                <ul>
+                {% for county in top_counties.iterrows() %}
+                    <li>{{ county[1]['NAME'] | smart_capitalize }}, {{ county[1]['State'] }}: {{ county[1]['normalized_score'] | round_three}}</li>
+                {% endfor %}
+                </ul>
+            </div>
+
+            <div class="county-list">
+                <h3>Worst 5 Counties for Comfort</h3>
+                <ul>
+                {% for county in bottom_counties.iterrows() %}
+                    <li>{{ county[1]['NAME'] | smart_capitalize }}, {{ county[1]['State'] }}: {{ county[1]['normalized_score'] | round_three}}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% else %}
+        <div class="instructions">
+            <p>Instructions: Fill out the questions on the left, press the green submit button, and then your results will appear here. There are already values filled in as examples but please change everything to whatever you want!.</p>
+            <button id="learnMoreBtn">Learn More</button>
+        </div>
+        <div class="explanation" id="explanation" style="display: none;">
+            <h3>Comfort Score Formula Explanation</h3>
+            <p>The Comfort Score is calculated based on your climate preferences using the following formula:</p>
+            <ul>
+                <li><strong>Temperature Score:</strong> The code calculates the absolute difference between your preferences and the "Hottest month's avg high (F)" and "Coldest month's avg low (F)" data points for each county. The smaller the difference, the higher the temperature score. The score is then normalized using percentile-based normalization (5th and 95th percentiles used as min/max), which scales the scores to be between 0 and 1.</li>
+                <li><strong>Humidity Score:</strong> The code maps your preferences (low, moderate, high) to the corresponding minimum, mean, and maximum values of the "Summer Relative Humidity (afternoon)" and "Winter Relative Humidity (afternoon)" data points. The absolute difference between your mapped preference and the county's humidity level is calculated, and the score is normalized using percentile-based normalization.</li>
+                <li><strong>Rainfall Score:</strong> The code maps your annual rainfall preference (low, moderate, high) to the corresponding minimum, mean, and maximum values of the "Annual rainfall (in)" data point. The absolute difference between your mapped preference and the county's annual rainfall is calculated, and the score is normalized using percentile-based normalization. Additionally, it considers your rainfall season preference (balanced, more in summer, more in winter) by calculating the difference between the "Summer rainfall (in)" and "Winter rainfall (in)" data points. The rainfall difference score is then normalized.</li>
+                <li><strong>Snowfall Score:</strong> The code calculates the absolute difference between your desired number of snow days and the "Days of snow per year" data point for each county, and normalizes the score. If you enjoy snow, the score also considers the "Annual snowfall (in)" data point, with higher snowfall resulting in a higher score. If you don't enjoy snow, higher snowfall will result in a lower score. The snowfall score is then normalized.</li>
+                <li><strong>Sun Score:</strong> The code maps your sunshine preference (less sun, average sun, more sun) to the corresponding minimum, mean, and maximum values of the "Annual Sunshine - Percentage of Possible" data point. The absolute difference between your mapped preference and the county's sunshine percentage is calculated, and the score is normalized. Similarly, it maps your UV preference (low, moderate, high) to the corresponding minimum, mean, and maximum values of the "UV Index" data point, calculates the absolute difference, and normalizes the score.</li>
+            </ul>
+            <p>The individual scores are then combined using weightings determined by the importance you assigned to each factor. The final Comfort Score is the weighted sum of the individual scores divided by the sum of the weights, re-normalized to produce scores at 0 and 1, with higher scores indicating a better match to your climate preferences.</p>
+        </div>
+
+        {% endif %}
+
+        <div class="data-sources">
+            <p>Data Sources:</p>
+            <ul>
+                <li>Climate Data: <a href="https://amcneil36.github.io/programs/WeatherAndDemographicsInformation/" target="_blank">Weather and Demographics Information</a> (sourced from NOAA)</li>
+                <li>County Coordinate Data: <a href="https://raw.githubusercontent.com/holtzy/The-Python-Graph-Gallery/master/static/data/US-counties.geojson" target="_blank">US Counties GeoJSON</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    document.getElementById("learnMoreBtn").addEventListener("click", function() {
+        var explanation = document.getElementById("explanation");
+        if (explanation.style.display === "none") {
+            explanation.style.display = "block";
+            this.textContent = "Hide Details";
+        } else {
+            explanation.style.display = "none";
+            this.textContent = "Learn More";
+        }
+    });
+</script>
